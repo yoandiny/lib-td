@@ -1,4 +1,4 @@
-﻿package mg.yoan.lib.repository;
+package mg.yoan.lib.repository;
 
 import java.util.List;
 import java.util.UUID;

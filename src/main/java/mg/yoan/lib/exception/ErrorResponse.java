@@ -1,4 +1,4 @@
-﻿package mg.yoan.lib.exception;
+package mg.yoan.lib.exception;
 
 import java.time.Instant;
 

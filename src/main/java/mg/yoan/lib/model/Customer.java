@@ -1,4 +1,4 @@
-﻿package mg.yoan.lib.model;
+package mg.yoan.lib.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-﻿package mg.yoan.lib.model.dto;
+package mg.yoan.lib.model.dto;
 
 import java.time.Instant;
 import java.util.List;

@@ -1,4 +1,4 @@
-﻿package mg.yoan.lib.service;
+package mg.yoan.lib.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

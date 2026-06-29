@@ -1,4 +1,4 @@
-﻿package mg.yoan.lib.model.dto;
+package mg.yoan.lib.model.dto;
 
 import java.util.List;
 import java.util.UUID;

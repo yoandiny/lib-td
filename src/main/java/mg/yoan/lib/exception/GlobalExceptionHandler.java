@@ -1,4 +1,4 @@
-﻿package mg.yoan.lib.exception;
+package mg.yoan.lib.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.Instant;

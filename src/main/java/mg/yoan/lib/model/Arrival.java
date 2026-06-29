@@ -1,4 +1,4 @@
-﻿package mg.yoan.lib.model;
+package mg.yoan.lib.model;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

@@ -1,4 +1,4 @@
-﻿package mg.yoan.lib.exception;
+package mg.yoan.lib.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

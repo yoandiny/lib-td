@@ -1,4 +1,4 @@
-﻿package mg.yoan.lib.service;
+package mg.yoan.lib.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;

@@ -1,4 +1,4 @@
-﻿package mg.yoan.lib.service;
+package mg.yoan.lib.service;
 
 import java.util.List;
 import java.util.UUID;

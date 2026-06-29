@@ -1,4 +1,4 @@
-﻿package mg.yoan.lib.repository.specification;
+package mg.yoan.lib.repository.specification;
 
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;

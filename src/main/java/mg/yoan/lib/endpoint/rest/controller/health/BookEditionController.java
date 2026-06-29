@@ -1,4 +1,4 @@
-﻿package mg.yoan.lib.endpoint.rest.controller.health;
+package mg.yoan.lib.endpoint.rest.controller.health;
 
 import java.util.List;
 import java.util.UUID;
