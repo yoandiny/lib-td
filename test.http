@@ -1,0 +1,113 @@
+﻿@baseUrl = https://i6czuha4c5xc6agtik2bh7kqpa0azrgf.lambda-url.eu-west-3.on.aws/
+@bookId = 1
+@formatId = 47e35dc3-753d-4a55-965a-ef05225f6506
+@bookEditionId = replace-with-book-edition-id
+
+### Health
+GET {{baseUrl}}/ping
+
+### Create format - pocket
+POST {{baseUrl}}/formats
+Content-Type: application/json
+
+{
+  "formatLabel": "POCKET"
+}
+
+### Create format - hardcover
+POST {{baseUrl}}/formats
+Content-Type: application/json
+
+{
+  "formatLabel": "PAPERCOVER"
+}
+
+### Get all formats
+GET {{baseUrl}}/formats
+
+### Get format by id
+GET {{baseUrl}}/formats/{{formatId}}
+
+### Update format
+PUT {{baseUrl}}/formats/{{formatId}}
+Content-Type: application/json
+
+{
+  "formatLabel": "HARDCOVER"
+}
+
+### Delete format
+DELETE {{baseUrl}}/formats/{{formatId}}
+
+### Get all books
+GET {{baseUrl}}/books
+
+### Get book by id
+GET {{baseUrl}}/books/{{bookId}}
+
+### Create book edition
+POST {{baseUrl}}/book-editions
+Content-Type: application/json
+
+{
+  "isbn": "9780000000001",
+  "bookId": {{bookId}},
+  "formatId": "{{formatId}}",
+  "price": 25000.0
+}
+
+### Get all book editions
+GET {{baseUrl}}/book-editions
+
+### Get book editions by book id
+GET {{baseUrl}}/book-editions?bookId={{bookId}}
+
+### Get book edition by id
+GET {{baseUrl}}/book-editions/{{bookEditionId}}
+
+### Update book edition
+PUT {{baseUrl}}/book-editions/{{bookEditionId}}
+Content-Type: application/json
+
+{
+  "isbn": "9780000000002",
+  "bookId": {{bookId}},
+  "formatId": "{{formatId}}",
+  "price": 30000.0
+}
+
+### Delete book edition
+DELETE {{baseUrl}}/book-editions/{{bookEditionId}}
+
+### Search book editions - by author and price range
+GET {{baseUrl}}/book-editions/search?authorName=king&minPrice=10000&maxPrice=50000
+
+### Search book editions - hardcover, sorted by price desc
+GET {{baseUrl}}/book-editions/search?formatLabel=HARDCOVER&sortBy=price&sortDir=desc
+
+### Search book editions - by title and genre with pagination
+GET {{baseUrl}}/book-editions/search?title=java&genre=tech&page=0&size=10
+
+### Search book editions - by publication year range
+GET {{baseUrl}}/book-editions/search?minYear=2000&maxYear=2020
+
+### Create arrival - multiple book editions in one shipment
+POST {{baseUrl}}/arrivals
+Content-Type: application/json
+
+{
+  "arrivedAt": "2026-06-15T10:00:00",
+  "lines": [
+    { "bookEditionId": "{{bookEditionId}}", "quantity": 10 },
+    { "bookEditionId": "replace-with-another-edition-id", "quantity": 5 }
+  ]
+}
+
+### Get all arrivals
+GET {{baseUrl}}/arrivals
+
+### Get arrival by id
+GET {{baseUrl}}/arrivals/replace-with-arrival-id
+
+### Delete arrival
+DELETE {{baseUrl}}/arrivals/replace-with-arrival-id

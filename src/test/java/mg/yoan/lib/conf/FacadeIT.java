@@ -1,4 +1,4 @@
-package mg.yoan.lib.conf;
+﻿package mg.yoan.lib.conf;
 
 import static java.lang.Runtime.getRuntime;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;

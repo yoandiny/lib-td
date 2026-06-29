@@ -1,4 +1,4 @@
-package mg.yoan.lib.conf;
+﻿package mg.yoan.lib.conf;
 
 import mg.yoan.lib.PojaGenerated;
 import org.springframework.test.context.DynamicPropertyRegistry;
