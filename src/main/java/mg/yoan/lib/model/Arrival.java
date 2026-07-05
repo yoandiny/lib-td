@@ -1,5 +1,6 @@
 package mg.yoan.lib.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,5 +39,6 @@ public class Arrival {
       cascade = CascadeType.ALL,
       orphanRemoval = true,
       fetch = jakarta.persistence.FetchType.LAZY)
+  @JsonIgnore
   private List<ArrivalLine> lines;
 }

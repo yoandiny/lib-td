@@ -1,5 +1,6 @@
 package mg.yoan.lib.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -35,10 +36,12 @@ public class Sale {
 
   @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL, orphanRemoval = true)
   @ToString.Exclude
+  @JsonIgnore
   private List<SaleLine> saleLines;
 
   @OneToOne(mappedBy = "sale", cascade = CascadeType.ALL)
   @ToString.Exclude
+  @JsonIgnore
   private Payment payment;
 
   public boolean isPending() {
