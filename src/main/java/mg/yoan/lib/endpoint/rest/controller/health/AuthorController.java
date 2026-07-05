@@ -14,33 +14,33 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/authors")
 @AllArgsConstructor
 public class AuthorController {
-    private final AuthorService authorService;
+  private final AuthorService authorService;
 
-    @PostMapping
-    public ResponseEntity<Author> addAuthor(@RequestBody AuthorRequest authorRequest) {
-        var created = authorService.create(authorRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
-    }
+  @PostMapping
+  public ResponseEntity<Author> addAuthor(@RequestBody AuthorRequest authorRequest) {
+    var created = authorService.create(authorRequest);
+    return ResponseEntity.status(HttpStatus.CREATED).body(created);
+  }
 
-    @GetMapping
-    public ResponseEntity<List<Author>> getAllAuthors() {
-        return ResponseEntity.ok(authorService.getAll());
-    }
+  @GetMapping
+  public ResponseEntity<List<Author>> getAllAuthors() {
+    return ResponseEntity.ok(authorService.getAll());
+  }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Author> getAuthorById(@PathVariable UUID id) {
-        return ResponseEntity.ok(authorService.getById(id));
-    }
+  @GetMapping("/{id}")
+  public ResponseEntity<Author> getAuthorById(@PathVariable UUID id) {
+    return ResponseEntity.ok(authorService.getById(id));
+  }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Author> updateAuthor(
-            @PathVariable UUID id, @RequestBody AuthorRequest authorRequest) {
-        return ResponseEntity.ok(authorService.update(id, authorRequest));
-    }
+  @PutMapping("/{id}")
+  public ResponseEntity<Author> updateAuthor(
+      @PathVariable UUID id, @RequestBody AuthorRequest authorRequest) {
+    return ResponseEntity.ok(authorService.update(id, authorRequest));
+  }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Author> deleteAuthor(@PathVariable UUID id) {
-        authorService.delete(id);
-        return ResponseEntity.noContent().build();
-    }
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Author> deleteAuthor(@PathVariable UUID id) {
+    authorService.delete(id);
+    return ResponseEntity.noContent().build();
+  }
 }

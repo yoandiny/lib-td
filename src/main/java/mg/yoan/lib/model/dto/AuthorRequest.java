@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthorRequest {
-    private String lastName;
-    private String firstName;
+  private String lastName;
+  private String firstName;
 }
