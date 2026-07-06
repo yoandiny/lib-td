@@ -50,4 +50,13 @@ public class GlobalExceptionHandler {
             new ErrorResponse(
                 Instant.now(), 401, "Unauthorized", ex.getMessage(), request.getRequestURI()));
   }
+
+  @ExceptionHandler(IllegalStateException.class)
+  public ResponseEntity<ErrorResponse> handleIllegalStateException(
+          IllegalStateException ex, HttpServletRequest request) {
+    return ResponseEntity.status(HttpStatus.CONFLICT)
+            .body(
+                    new ErrorResponse(
+                            Instant.now(), 409, "Conflict", ex.getMessage(), request.getRequestURI()));
+  }
 }
