@@ -49,7 +49,7 @@ class ArrivalServiceTest {
         Arrival result = arrivalService.create(request);
 
         assertThat(result.getLines()).hasSize(1);
-        assertThat(result.getLines().get(0).getQuantity()).isEqualTo(50);
+        assertThat(result.getLines().getFirst().getQuantity()).isEqualTo(50);
     }
 
     @Test
