@@ -79,13 +79,13 @@ public class SaleService {
       int stock = stockService.getStock(line.getBookEdition().getId());
       if (stock < 0) {
         throw new IllegalStateException(
-                "Cannot validate sale "
-                        + id
-                        + ": insufficient stock for BookEdition "
-                        + line.getBookEdition().getId()
-                        + " (stock would be "
-                        + stock
-                        + ")");
+            "Cannot validate sale "
+                + id
+                + ": insufficient stock for BookEdition "
+                + line.getBookEdition().getId()
+                + " (stock would be "
+                + stock
+                + ")");
       }
     }
 

@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/reports")
 @RequiredArgsConstructor
 public class ReportController {
-    private final ReportService reportService;
+  private final ReportService reportService;
 
-    @GetMapping("/revenue-by-genre")
-    public ResponseEntity<Map<String, BigDecimal>> getRevenueByGenre() {
-        return ResponseEntity.ok(reportService.getRevenueByGenre());
-    }
+  @GetMapping("/revenue-by-genre")
+  public ResponseEntity<Map<String, BigDecimal>> getRevenueByGenre() {
+    return ResponseEntity.ok(reportService.getRevenueByGenre());
+  }
 }

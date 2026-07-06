@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import mg.yoan.lib.exception.NotFoundException;
 import mg.yoan.lib.model.BookEdition;
 import mg.yoan.lib.model.Format;
@@ -27,10 +26,8 @@ class StockServiceTest {
 
   @Mock ArrivalLineRepository arrivalLineRepository;
   @Mock SaleLineRepository saleLineRepository;
-  @Mock
-  BookEditionRepository bookEditionRepository;
-  @Mock
-  BookRepository bookRepository;
+  @Mock BookEditionRepository bookEditionRepository;
+  @Mock BookRepository bookRepository;
 
   @InjectMocks StockService stockService;
 
@@ -67,17 +64,17 @@ class StockServiceTest {
     UUID editionHardcoverId = UUID.randomUUID();
     UUID editionPocketId = UUID.randomUUID();
 
-    Format hardcover = Format.builder().id(UUID.randomUUID()).formatLabel(FormatLabel.HARDCOVER).build();
+    Format hardcover =
+        Format.builder().id(UUID.randomUUID()).formatLabel(FormatLabel.HARDCOVER).build();
     Format pocket = Format.builder().id(UUID.randomUUID()).formatLabel(FormatLabel.POCKET).build();
 
     BookEdition editionHardcover =
-            BookEdition.builder().id(editionHardcoverId).format(hardcover).build();
-    BookEdition editionPocket =
-            BookEdition.builder().id(editionPocketId).format(pocket).build();
+        BookEdition.builder().id(editionHardcoverId).format(hardcover).build();
+    BookEdition editionPocket = BookEdition.builder().id(editionPocketId).format(pocket).build();
 
     when(bookRepository.existsById(bookId)).thenReturn(true);
     when(bookEditionRepository.findAllByBookId(bookId))
-            .thenReturn(List.of(editionHardcover, editionPocket));
+        .thenReturn(List.of(editionHardcover, editionPocket));
 
     when(arrivalLineRepository.sumQuantityByBookEditionId(editionHardcoverId)).thenReturn(50);
     when(saleLineRepository.sumQuantityByBookEditionId(editionHardcoverId)).thenReturn(2);

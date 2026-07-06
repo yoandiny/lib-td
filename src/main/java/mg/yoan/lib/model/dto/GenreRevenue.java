@@ -3,7 +3,7 @@ package mg.yoan.lib.model.dto;
 import java.math.BigDecimal;
 
 public interface GenreRevenue {
-    String getGenre();
+  String getGenre();
 
-    BigDecimal getRevenue();
+  BigDecimal getRevenue();
 }

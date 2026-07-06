@@ -20,13 +20,13 @@ public interface SaleLineRepository extends JpaRepository<SaleLine, UUID> {
   Integer sumQuantityByBookEditionId(@Param("bookEditionId") UUID bookEditionId);
 
   @Query(
-          """
-        SELECT COALESCE(be.book.genre, 'UNKNOWN') AS genre,
-               COALESCE(SUM(sl.unitPrice * sl.quantity), 0) AS revenue
-        FROM SaleLine sl
-        JOIN sl.bookEdition be
-        WHERE sl.sale.status = mg.yoan.lib.model.SaleStatus.VALIDATED
-        GROUP BY COALESCE(be.book.genre, 'UNKNOWN')
-    """)
+      """
+          SELECT COALESCE(be.book.genre, 'UNKNOWN') AS genre,
+                 COALESCE(SUM(sl.unitPrice * sl.quantity), 0) AS revenue
+          FROM SaleLine sl
+          JOIN sl.bookEdition be
+          WHERE sl.sale.status = mg.yoan.lib.model.SaleStatus.VALIDATED
+          GROUP BY COALESCE(be.book.genre, 'UNKNOWN')
+      """)
   List<GenreRevenue> sumRevenueGroupedByGenre();
 }

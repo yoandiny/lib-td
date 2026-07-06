@@ -37,7 +37,7 @@ public class StockService {
 
     for (BookEdition edition : editions) {
       String label =
-              edition.getFormat() != null ? edition.getFormat().getFormatLabel().name() : "UNKNOWN";
+          edition.getFormat() != null ? edition.getFormat().getFormatLabel().name() : "UNKNOWN";
       int stock = getStock(edition.getId());
       stockByFormat.merge(label, stock, Integer::sum);
     }

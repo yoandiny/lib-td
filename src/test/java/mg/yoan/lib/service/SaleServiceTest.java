@@ -27,47 +27,47 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class SaleServiceTest {
 
-    @Mock SaleRepository saleRepository;
-    @Mock SaleLineRepository saleLineRepository;
-    @Mock CustomerRepository customerRepository;
-    @Mock BookEditionRepository bookEditionRepository;
-    @Mock StockService stockService;
+  @Mock SaleRepository saleRepository;
+  @Mock SaleLineRepository saleLineRepository;
+  @Mock CustomerRepository customerRepository;
+  @Mock BookEditionRepository bookEditionRepository;
+  @Mock StockService stockService;
 
-    @InjectMocks SaleService saleService;
+  @InjectMocks SaleService saleService;
 
-    @Test
-    void validate_withSufficientStock_setsStatusValidated() {
-        UUID saleId = UUID.randomUUID();
-        UUID editionId = UUID.randomUUID();
+  @Test
+  void validate_withSufficientStock_setsStatusValidated() {
+    UUID saleId = UUID.randomUUID();
+    UUID editionId = UUID.randomUUID();
 
-        SaleLine line =
-                SaleLine.builder().bookEdition(BookEdition.builder().id(editionId).build()).build();
-        Sale sale =
-                Sale.builder().id(saleId).status(SaleStatus.IN_PROGRESS).saleLines(List.of(line)).build();
+    SaleLine line =
+        SaleLine.builder().bookEdition(BookEdition.builder().id(editionId).build()).build();
+    Sale sale =
+        Sale.builder().id(saleId).status(SaleStatus.IN_PROGRESS).saleLines(List.of(line)).build();
 
-        when(saleRepository.findById(saleId)).thenReturn(Optional.of(sale));
-        when(stockService.getStock(editionId)).thenReturn(5);
-        when(saleRepository.save(any(Sale.class))).thenAnswer(inv -> inv.getArgument(0));
+    when(saleRepository.findById(saleId)).thenReturn(Optional.of(sale));
+    when(stockService.getStock(editionId)).thenReturn(5);
+    when(saleRepository.save(any(Sale.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        Sale result = saleService.validate(saleId);
+    Sale result = saleService.validate(saleId);
 
-        assertThat(result.getStatus()).isEqualTo(SaleStatus.VALIDATED);
-    }
+    assertThat(result.getStatus()).isEqualTo(SaleStatus.VALIDATED);
+  }
 
-    @Test
-    void validate_withInsufficientStock_throwsIllegalStateException() {
-        UUID saleId = UUID.randomUUID();
-        UUID editionId = UUID.randomUUID();
+  @Test
+  void validate_withInsufficientStock_throwsIllegalStateException() {
+    UUID saleId = UUID.randomUUID();
+    UUID editionId = UUID.randomUUID();
 
-        SaleLine line =
-                SaleLine.builder().bookEdition(BookEdition.builder().id(editionId).build()).build();
-        Sale sale =
-                Sale.builder().id(saleId).status(SaleStatus.IN_PROGRESS).saleLines(List.of(line)).build();
+    SaleLine line =
+        SaleLine.builder().bookEdition(BookEdition.builder().id(editionId).build()).build();
+    Sale sale =
+        Sale.builder().id(saleId).status(SaleStatus.IN_PROGRESS).saleLines(List.of(line)).build();
 
-        when(saleRepository.findById(saleId)).thenReturn(Optional.of(sale));
-        when(stockService.getStock(editionId)).thenReturn(-1);
+    when(saleRepository.findById(saleId)).thenReturn(Optional.of(sale));
+    when(stockService.getStock(editionId)).thenReturn(-1);
 
-        assertThrows(IllegalStateException.class, () -> saleService.validate(saleId));
-        verify(saleRepository, never()).save(any());
-    }
+    assertThrows(IllegalStateException.class, () -> saleService.validate(saleId));
+    verify(saleRepository, never()).save(any());
+  }
 }

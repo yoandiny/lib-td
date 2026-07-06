@@ -12,15 +12,15 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ReportService {
-    private final SaleLineRepository saleLineRepository;
+  private final SaleLineRepository saleLineRepository;
 
-    public Map<String, BigDecimal> getRevenueByGenre() {
-        return saleLineRepository.sumRevenueGroupedByGenre().stream()
-                .collect(
-                        Collectors.toMap(
-                                GenreRevenue::getGenre,
-                                GenreRevenue::getRevenue,
-                                BigDecimal::add,
-                                LinkedHashMap::new));
-    }
+  public Map<String, BigDecimal> getRevenueByGenre() {
+    return saleLineRepository.sumRevenueGroupedByGenre().stream()
+        .collect(
+            Collectors.toMap(
+                GenreRevenue::getGenre,
+                GenreRevenue::getRevenue,
+                BigDecimal::add,
+                LinkedHashMap::new));
+  }
 }

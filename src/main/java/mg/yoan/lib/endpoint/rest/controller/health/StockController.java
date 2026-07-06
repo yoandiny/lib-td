@@ -17,6 +17,7 @@ public class StockController {
   public ResponseEntity<Integer> getStock(@PathVariable UUID id) {
     return ResponseEntity.ok(stockService.getStock(id));
   }
+
   @GetMapping("/book/{bookId}")
   public ResponseEntity<Map<String, Integer>> getStockByBook(@PathVariable UUID bookId) {
     return ResponseEntity.ok(stockService.getStockByBook(bookId));
