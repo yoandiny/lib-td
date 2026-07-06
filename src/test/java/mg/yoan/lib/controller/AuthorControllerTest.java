@@ -9,7 +9,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.UUID;
-
 import mg.yoan.lib.endpoint.rest.controller.health.AuthorController;
 import mg.yoan.lib.exception.NotFoundException;
 import mg.yoan.lib.model.Author;
@@ -25,35 +24,35 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(AuthorController.class)
 class AuthorControllerTest {
 
-    @Autowired MockMvc mockMvc;
-    @Autowired ObjectMapper objectMapper;
-    @MockBean AuthorService authorService;
+  @Autowired MockMvc mockMvc;
+  @Autowired ObjectMapper objectMapper;
+  @MockBean AuthorService authorService;
 
-    @Test
-    void createAuthor_returns201() throws Exception {
-        AuthorRequest request = new AuthorRequest();
-        request.setLastName("Hugo");
-        request.setFirstName("Victor");
+  @Test
+  void createAuthor_returns201() throws Exception {
+    AuthorRequest request = new AuthorRequest();
+    request.setLastName("Hugo");
+    request.setFirstName("Victor");
 
-        Author created =
-                Author.builder().id(UUID.randomUUID()).lastName("Hugo").firstName("Victor").build();
-        when(authorService.create(any(AuthorRequest.class))).thenReturn(created);
+    Author created =
+        Author.builder().id(UUID.randomUUID()).lastName("Hugo").firstName("Victor").build();
+    when(authorService.create(any(AuthorRequest.class))).thenReturn(created);
 
-        mockMvc
-                .perform(
-                        post("/authors")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.lastName").value("Hugo"));
-    }
+    mockMvc
+        .perform(
+            post("/authors")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.lastName").value("Hugo"));
+  }
 
-    @Test
-    void getAuthorById_withUnknownId_returns404() throws Exception {
-        UUID id = UUID.randomUUID();
-        when(authorService.getById(id))
-                .thenThrow(new NotFoundException("Author with id " + id + " not found"));
+  @Test
+  void getAuthorById_withUnknownId_returns404() throws Exception {
+    UUID id = UUID.randomUUID();
+    when(authorService.getById(id))
+        .thenThrow(new NotFoundException("Author with id " + id + " not found"));
 
-        mockMvc.perform(get("/authors/{id}", id)).andExpect(status().isNotFound());
-    }
+    mockMvc.perform(get("/authors/{id}", id)).andExpect(status().isNotFound());
+  }
 }

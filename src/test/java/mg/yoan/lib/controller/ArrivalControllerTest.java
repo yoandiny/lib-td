@@ -9,7 +9,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.UUID;
-
 import mg.yoan.lib.endpoint.rest.controller.health.ArrivalController;
 import mg.yoan.lib.exception.NotFoundException;
 import mg.yoan.lib.model.Arrival;
@@ -26,36 +25,36 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(ArrivalController.class)
 class ArrivalControllerTest {
 
-    @Autowired MockMvc mockMvc;
-    @Autowired ObjectMapper objectMapper;
-    @MockBean ArrivalService arrivalService;
+  @Autowired MockMvc mockMvc;
+  @Autowired ObjectMapper objectMapper;
+  @MockBean ArrivalService arrivalService;
 
-    @Test
-    void createArrival_returns201() throws Exception {
-        ArrivalLineRequest lineRequest = new ArrivalLineRequest();
-        lineRequest.setBookEditionId(UUID.randomUUID());
-        lineRequest.setQuantity(10);
+  @Test
+  void createArrival_returns201() throws Exception {
+    ArrivalLineRequest lineRequest = new ArrivalLineRequest();
+    lineRequest.setBookEditionId(UUID.randomUUID());
+    lineRequest.setQuantity(10);
 
-        ArrivalRequest request = new ArrivalRequest();
-        request.setLines(List.of(lineRequest));
+    ArrivalRequest request = new ArrivalRequest();
+    request.setLines(List.of(lineRequest));
 
-        Arrival created = Arrival.builder().id(UUID.randomUUID()).build();
-        when(arrivalService.create(any(ArrivalRequest.class))).thenReturn(created);
+    Arrival created = Arrival.builder().id(UUID.randomUUID()).build();
+    when(arrivalService.create(any(ArrivalRequest.class))).thenReturn(created);
 
-        mockMvc
-                .perform(
-                        post("/arrivals")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isCreated());
-    }
+    mockMvc
+        .perform(
+            post("/arrivals")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isCreated());
+  }
 
-    @Test
-    void getArrivalById_withUnknownId_returns404() throws Exception {
-        UUID id = UUID.randomUUID();
-        when(arrivalService.getById(id))
-                .thenThrow(new NotFoundException("Arrival with id " + id + " not found"));
+  @Test
+  void getArrivalById_withUnknownId_returns404() throws Exception {
+    UUID id = UUID.randomUUID();
+    when(arrivalService.getById(id))
+        .thenThrow(new NotFoundException("Arrival with id " + id + " not found"));
 
-        mockMvc.perform(get("/arrivals/{id}", id)).andExpect(status().isNotFound());
-    }
+    mockMvc.perform(get("/arrivals/{id}", id)).andExpect(status().isNotFound());
+  }
 }

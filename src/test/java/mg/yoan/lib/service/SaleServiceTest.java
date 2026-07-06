@@ -122,7 +122,7 @@ class SaleServiceTest {
   @Test
   void getAll_returnsAllSales() {
     when(saleRepository.findAll())
-            .thenReturn(List.of(Sale.builder().id(UUID.randomUUID()).build()));
+        .thenReturn(List.of(Sale.builder().id(UUID.randomUUID()).build()));
 
     assertThat(saleService.getAll()).hasSize(1);
   }
@@ -140,7 +140,7 @@ class SaleServiceTest {
     UUID customerId = UUID.randomUUID();
     when(customerRepository.existsById(customerId)).thenReturn(true);
     when(saleRepository.findAllByCustomerId(customerId))
-            .thenReturn(List.of(Sale.builder().id(UUID.randomUUID()).build()));
+        .thenReturn(List.of(Sale.builder().id(UUID.randomUUID()).build()));
 
     assertThat(saleService.getByCustomer(customerId)).hasSize(1);
   }
@@ -159,9 +159,9 @@ class SaleServiceTest {
     UUID editionId = UUID.randomUUID();
 
     SaleLine line =
-            SaleLine.builder().bookEdition(BookEdition.builder().id(editionId).build()).build();
+        SaleLine.builder().bookEdition(BookEdition.builder().id(editionId).build()).build();
     Sale sale =
-            Sale.builder().id(saleId).status(SaleStatus.IN_PROGRESS).saleLines(List.of(line)).build();
+        Sale.builder().id(saleId).status(SaleStatus.IN_PROGRESS).saleLines(List.of(line)).build();
 
     when(saleRepository.findById(saleId)).thenReturn(Optional.of(sale));
     when(stockService.getStock(editionId)).thenReturn(5);
@@ -178,9 +178,9 @@ class SaleServiceTest {
     UUID editionId = UUID.randomUUID();
 
     SaleLine line =
-            SaleLine.builder().bookEdition(BookEdition.builder().id(editionId).build()).build();
+        SaleLine.builder().bookEdition(BookEdition.builder().id(editionId).build()).build();
     Sale sale =
-            Sale.builder().id(saleId).status(SaleStatus.IN_PROGRESS).saleLines(List.of(line)).build();
+        Sale.builder().id(saleId).status(SaleStatus.IN_PROGRESS).saleLines(List.of(line)).build();
 
     when(saleRepository.findById(saleId)).thenReturn(Optional.of(sale));
     when(stockService.getStock(editionId)).thenReturn(-1);

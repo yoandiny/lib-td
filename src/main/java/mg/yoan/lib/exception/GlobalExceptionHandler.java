@@ -53,10 +53,10 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(IllegalStateException.class)
   public ResponseEntity<ErrorResponse> handleIllegalStateException(
-          IllegalStateException ex, HttpServletRequest request) {
+      IllegalStateException ex, HttpServletRequest request) {
     return ResponseEntity.status(HttpStatus.CONFLICT)
-            .body(
-                    new ErrorResponse(
-                            Instant.now(), 409, "Conflict", ex.getMessage(), request.getRequestURI()));
+        .body(
+            new ErrorResponse(
+                Instant.now(), 409, "Conflict", ex.getMessage(), request.getRequestURI()));
   }
 }

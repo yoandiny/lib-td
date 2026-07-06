@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.UUID;
-
 import mg.yoan.lib.endpoint.rest.controller.health.BookController;
 import mg.yoan.lib.exception.NotFoundException;
 import mg.yoan.lib.model.Book;
@@ -25,33 +24,34 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(BookController.class)
 class BookControllerTest {
 
-    @Autowired MockMvc mockMvc;
-    @Autowired ObjectMapper objectMapper;
-    @MockBean BookService bookService;
-    @MockBean BookEditionService bookEditionService;
+  @Autowired MockMvc mockMvc;
+  @Autowired ObjectMapper objectMapper;
+  @MockBean BookService bookService;
+  @MockBean BookEditionService bookEditionService;
 
-    @Test
-    void addBook_returns201() throws Exception {
-        BookRequest request = new BookRequest();
-        request.setTitle("Les Misérables");
-        request.setAuthorId(UUID.randomUUID());
+  @Test
+  void addBook_returns201() throws Exception {
+    BookRequest request = new BookRequest();
+    request.setTitle("Les Misérables");
+    request.setAuthorId(UUID.randomUUID());
 
-        Book created = Book.builder().id(UUID.randomUUID()).title("Les Misérables").build();
-        when(bookService.create(any(BookRequest.class))).thenReturn(created);
+    Book created = Book.builder().id(UUID.randomUUID()).title("Les Misérables").build();
+    when(bookService.create(any(BookRequest.class))).thenReturn(created);
 
-        mockMvc
-                .perform(
-                        post("/books")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isCreated());
-    }
+    mockMvc
+        .perform(
+            post("/books")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isCreated());
+  }
 
-    @Test
-    void getBookById_withUnknownId_returns404() throws Exception {
-        UUID id = UUID.randomUUID();
-        when(bookService.getById(id)).thenThrow(new NotFoundException("Book with id " + id + " not found"));
+  @Test
+  void getBookById_withUnknownId_returns404() throws Exception {
+    UUID id = UUID.randomUUID();
+    when(bookService.getById(id))
+        .thenThrow(new NotFoundException("Book with id " + id + " not found"));
 
-        mockMvc.perform(get("/books/{id}", id)).andExpect(status().isNotFound());
-    }
+    mockMvc.perform(get("/books/{id}", id)).andExpect(status().isNotFound());
+  }
 }

@@ -23,65 +23,65 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class FormatServiceTest {
 
-    @Mock FormatRepository formatRepository;
-    @InjectMocks FormatService formatService;
+  @Mock FormatRepository formatRepository;
+  @InjectMocks FormatService formatService;
 
-    @Test
-    void create_savesAndReturnsFormat() {
-        FormatRequest request = new FormatRequest();
-        request.setFormatLabel(FormatLabel.HARDCOVER);
+  @Test
+  void create_savesAndReturnsFormat() {
+    FormatRequest request = new FormatRequest();
+    request.setFormatLabel(FormatLabel.HARDCOVER);
 
-        Format saved = Format.builder().id(UUID.randomUUID()).formatLabel(FormatLabel.HARDCOVER).build();
-        when(formatRepository.save(any(Format.class))).thenReturn(saved);
+    Format saved =
+        Format.builder().id(UUID.randomUUID()).formatLabel(FormatLabel.HARDCOVER).build();
+    when(formatRepository.save(any(Format.class))).thenReturn(saved);
 
-        assertThat(formatService.create(request).getFormatLabel()).isEqualTo(FormatLabel.HARDCOVER);
-    }
+    assertThat(formatService.create(request).getFormatLabel()).isEqualTo(FormatLabel.HARDCOVER);
+  }
 
-    @Test
-    void getAll_returnsAllFormats() {
-        when(formatRepository.findAll())
-                .thenReturn(List.of(Format.builder().id(UUID.randomUUID()).build()));
+  @Test
+  void getAll_returnsAllFormats() {
+    when(formatRepository.findAll())
+        .thenReturn(List.of(Format.builder().id(UUID.randomUUID()).build()));
 
-        assertThat(formatService.getAll()).hasSize(1);
-    }
+    assertThat(formatService.getAll()).hasSize(1);
+  }
 
-    @Test
-    void getById_withUnknownId_throwsNotFoundException() {
-        UUID id = UUID.randomUUID();
-        when(formatRepository.findById(id)).thenReturn(Optional.empty());
+  @Test
+  void getById_withUnknownId_throwsNotFoundException() {
+    UUID id = UUID.randomUUID();
+    when(formatRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> formatService.getById(id));
-    }
+    assertThrows(NotFoundException.class, () -> formatService.getById(id));
+  }
 
-    @Test
-    void update_withExistingId_updatesFormat() {
-        UUID id = UUID.randomUUID();
-        Format existing = Format.builder().id(id).formatLabel(FormatLabel.POCKET).build();
-        FormatRequest request = new FormatRequest();
-        request.setFormatLabel(FormatLabel.SOFTCOVER);
+  @Test
+  void update_withExistingId_updatesFormat() {
+    UUID id = UUID.randomUUID();
+    Format existing = Format.builder().id(id).formatLabel(FormatLabel.POCKET).build();
+    FormatRequest request = new FormatRequest();
+    request.setFormatLabel(FormatLabel.SOFTCOVER);
 
-        when(formatRepository.findById(id)).thenReturn(Optional.of(existing));
-        when(formatRepository.save(any(Format.class))).thenAnswer(inv -> inv.getArgument(0));
+    when(formatRepository.findById(id)).thenReturn(Optional.of(existing));
+    when(formatRepository.save(any(Format.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        assertThat(formatService.update(id, request).getFormatLabel())
-                .isEqualTo(FormatLabel.SOFTCOVER);
-    }
+    assertThat(formatService.update(id, request).getFormatLabel()).isEqualTo(FormatLabel.SOFTCOVER);
+  }
 
-    @Test
-    void delete_withExistingId_deletesFormat() {
-        UUID id = UUID.randomUUID();
-        when(formatRepository.existsById(id)).thenReturn(true);
+  @Test
+  void delete_withExistingId_deletesFormat() {
+    UUID id = UUID.randomUUID();
+    when(formatRepository.existsById(id)).thenReturn(true);
 
-        formatService.delete(id);
+    formatService.delete(id);
 
-        verify(formatRepository).deleteById(id);
-    }
+    verify(formatRepository).deleteById(id);
+  }
 
-    @Test
-    void delete_withUnknownId_throwsNotFoundException() {
-        UUID id = UUID.randomUUID();
-        when(formatRepository.existsById(id)).thenReturn(false);
+  @Test
+  void delete_withUnknownId_throwsNotFoundException() {
+    UUID id = UUID.randomUUID();
+    when(formatRepository.existsById(id)).thenReturn(false);
 
-        assertThrows(NotFoundException.class, () -> formatService.delete(id));
-    }
+    assertThrows(NotFoundException.class, () -> formatService.delete(id));
+  }
 }

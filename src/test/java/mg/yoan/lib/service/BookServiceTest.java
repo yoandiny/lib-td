@@ -50,14 +50,14 @@ public class BookServiceTest {
     author.setLastName("Boom");
 
     Book saved =
-            Book.builder()
-                    .id(authorId01)
-                    .title("Spring Boot")
-                    .author(author)
-                    .isbn("123")
-                    .genre("Tech")
-                    .publicationYear(2025)
-                    .build();
+        Book.builder()
+            .id(authorId01)
+            .title("Spring Boot")
+            .author(author)
+            .isbn("123")
+            .genre("Tech")
+            .publicationYear(2025)
+            .build();
 
     when(authorRepository.findById(authorId01)).thenReturn(Optional.of(author));
     when(bookRepository.save(any(Book.class))).thenReturn(saved);
