@@ -20,6 +20,7 @@ public class SaleService {
   private final SaleLineRepository saleLineRepository;
   private final CustomerRepository customerRepository;
   private final BookEditionRepository bookEditionRepository;
+  private final StockService stockService;
 
   @Transactional
   public Sale create(SaleRequest request) {
@@ -73,6 +74,21 @@ public class SaleService {
   @Transactional
   public Sale validate(UUID id) {
     Sale sale = getById(id);
+
+    for (SaleLine line : sale.getSaleLines()) {
+      int stock = stockService.getStock(line.getBookEdition().getId());
+      if (stock < 0) {
+        throw new IllegalStateException(
+                "Cannot validate sale "
+                        + id
+                        + ": insufficient stock for BookEdition "
+                        + line.getBookEdition().getId()
+                        + " (stock would be "
+                        + stock
+                        + ")");
+      }
+    }
+
     sale.validate();
     return saleRepository.save(sale);
   }
