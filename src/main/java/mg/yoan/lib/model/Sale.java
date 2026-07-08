@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import lombok.*;
@@ -27,7 +27,7 @@ public class Sale {
   private Customer customer;
 
   @Column(name = "sale_date", nullable = false)
-  private LocalDateTime saleDate;
+  private Instant saleDate;
 
   @Column(name = "total_amount", nullable = false)
   private BigDecimal totalAmount;

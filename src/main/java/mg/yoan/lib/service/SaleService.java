@@ -1,7 +1,7 @@
 package mg.yoan.lib.service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -34,7 +34,7 @@ public class SaleService {
     var sale =
         Sale.builder()
             .customer(customer)
-            .saleDate(LocalDateTime.now())
+            .saleDate(Instant.now())
             .status(SaleStatus.IN_PROGRESS)
             .totalAmount(BigDecimal.ZERO)
             .build();

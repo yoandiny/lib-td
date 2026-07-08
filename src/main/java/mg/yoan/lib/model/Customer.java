@@ -2,7 +2,7 @@ package mg.yoan.lib.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 import lombok.*;
 
@@ -28,5 +28,5 @@ public class Customer {
   @Column private String phone;
 
   @Column(name = "register_at")
-  private LocalDateTime registerAt;
+  private Instant registerAt;
 }

@@ -3,7 +3,7 @@ package mg.yoan.lib.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 import lombok.*;
 
@@ -36,13 +36,13 @@ public class Payment {
   private PaymentStatus status;
 
   @Column(name = "paid_at")
-  private LocalDateTime paidAt;
+  private Instant paidAt;
 
   public void process() {
     if (!PaymentStatus.PENDING.equals(this.status)) {
       throw new IllegalStateException("Only PENDING payments can be processed");
     }
     this.status = PaymentStatus.PAID;
-    this.paidAt = LocalDateTime.now();
+    this.paidAt = Instant.now();
   }
 }

@@ -3,8 +3,7 @@ package mg.yoan.lib.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -83,5 +82,16 @@ class FormatServiceTest {
     when(formatRepository.existsById(id)).thenReturn(false);
 
     assertThrows(NotFoundException.class, () -> formatService.delete(id));
+  }
+
+  @Test
+  void create_withExistingLabel_throwsIllegalStateException() {
+    FormatRequest request = new FormatRequest();
+    request.setFormatLabel(FormatLabel.HARDCOVER);
+
+    when(formatRepository.existsByFormatLabel(FormatLabel.HARDCOVER)).thenReturn(true);
+
+    assertThrows(IllegalStateException.class, () -> formatService.create(request));
+    verify(formatRepository, never()).save(any());
   }
 }
