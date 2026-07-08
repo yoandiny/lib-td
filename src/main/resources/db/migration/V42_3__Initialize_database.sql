@@ -1,26 +1,5 @@
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
--- 1. Dummy tables
-CREATE TABLE IF NOT EXISTS dummy
-(
-    id VARCHAR
-        CONSTRAINT dummy_pk PRIMARY KEY
-);
-
-INSERT INTO dummy (id)
-VALUES ('dummy-table-id-1')
-ON CONFLICT (id) DO NOTHING;
-
-CREATE TABLE IF NOT EXISTS dummy_uuid
-(
-    id VARCHAR
-        CONSTRAINT dummy_uuid_pk PRIMARY KEY
-);
-
-INSERT INTO dummy_uuid (id)
-VALUES ('dummy-uuid-id-1')
-ON CONFLICT (id) DO NOTHING;
-
 -- 2. Cleanups
 DROP TABLE IF EXISTS book_copy;
 DROP TYPE IF EXISTS copy_status;
