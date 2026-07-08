@@ -1,0 +1,1110 @@
+openapi: 3.0.3
+info:
+  title: Lib-TD API
+  description: >
+    API for managing a bookstore: authors, books, book editions,
+    formats, arrivals (stock restocking), sales, payments, and reports
+    (stock, revenue by genre).
+  version: "1.0.0"
+
+servers:
+  - url: /
+
+tags:
+  - name: Authors
+  - name: Books
+  - name: BookEditions
+  - name: Formats
+  - name: Arrivals
+  - name: Sales
+  - name: Payments
+  - name: Stock
+  - name: Reports
+
+paths:
+  # ---------------------------------------------------------------------
+  # AUTHORS
+  # ---------------------------------------------------------------------
+  /authors:
+    post:
+      tags: [Authors]
+      summary: Create an author
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorRequest'
+      responses:
+        '201':
+          description: Author created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+    get:
+      tags: [Authors]
+      summary: List all authors
+      responses:
+        '200':
+          description: List of authors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+
+  /authors/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Authors]
+      summary: Retrieve an author by id
+      responses:
+        '200':
+          description: Author found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Authors]
+      summary: Update an author
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorRequest'
+      responses:
+        '200':
+          description: Author updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [Authors]
+      summary: Delete an author
+      responses:
+        '204':
+          description: Author deleted
+
+  # ---------------------------------------------------------------------
+  # BOOKS
+  # ---------------------------------------------------------------------
+  /books:
+    post:
+      tags: [Books]
+      summary: Create a book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookRequest'
+      responses:
+        '201':
+          description: Book created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+    get:
+      tags: [Books]
+      summary: List all books
+      responses:
+        '200':
+          description: List of books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+
+  /books/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Books]
+      summary: Retrieve a book by id
+      responses:
+        '200':
+          description: Book found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Books]
+      summary: Update a book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookRequest'
+      responses:
+        '200':
+          description: Book updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [Books]
+      summary: Delete a book
+      responses:
+        '204':
+          description: Book deleted
+
+  /books/{id}/editions:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Books]
+      summary: List the editions of a book
+      responses:
+        '200':
+          description: List of editions of the book
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookEdition'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /books/{id}/editions/{editionId}:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+      - name: editionId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags: [Books]
+      summary: Retrieve a specific edition of a book
+      responses:
+        '200':
+          description: Edition found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookEdition'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ---------------------------------------------------------------------
+  # BOOK EDITIONS
+  # ---------------------------------------------------------------------
+  /book-editions:
+    post:
+      tags: [BookEditions]
+      summary: Create a book edition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookEditionRequest'
+      responses:
+        '201':
+          description: Edition created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookEdition'
+    get:
+      tags: [BookEditions]
+      summary: List book editions (optionally filtered by book)
+      parameters:
+        - name: bookId
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of editions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookEdition'
+
+  /book-editions/search:
+    get:
+      tags: [BookEditions]
+      summary: Paginated search of book editions based on several criteria
+      parameters:
+        - name: isbn
+          in: query
+          schema:
+            type: string
+        - name: formatLabel
+          in: query
+          schema:
+            $ref: '#/components/schemas/FormatLabel'
+        - name: minPrice
+          in: query
+          schema:
+            type: number
+            format: double
+        - name: maxPrice
+          in: query
+          schema:
+            type: number
+            format: double
+        - name: title
+          in: query
+          schema:
+            type: string
+        - name: genre
+          in: query
+          schema:
+            type: string
+        - name: minYear
+          in: query
+          schema:
+            type: integer
+        - name: maxYear
+          in: query
+          schema:
+            type: integer
+        - name: authorName
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+            default: id
+        - name: sortDir
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: asc
+      responses:
+        '200':
+          description: Page of editions matching the criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookEditionPage'
+
+  /book-editions/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [BookEditions]
+      summary: Retrieve an edition by id
+      responses:
+        '200':
+          description: Edition found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookEdition'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [BookEditions]
+      summary: Update an edition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookEditionRequest'
+      responses:
+        '200':
+          description: Edition updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookEdition'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [BookEditions]
+      summary: Delete an edition
+      responses:
+        '204':
+          description: Edition deleted
+
+  # ---------------------------------------------------------------------
+  # FORMATS
+  # ---------------------------------------------------------------------
+  /formats:
+    post:
+      tags: [Formats]
+      summary: Create a format
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormatRequest'
+      responses:
+        '201':
+          description: Format created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Format'
+    get:
+      tags: [Formats]
+      summary: List all formats
+      responses:
+        '200':
+          description: List of formats
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Format'
+
+  /formats/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Formats]
+      summary: Retrieve a format by id
+      responses:
+        '200':
+          description: Format found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Format'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Formats]
+      summary: Update a format
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormatRequest'
+      responses:
+        '200':
+          description: Format updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Format'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [Formats]
+      summary: Delete a format
+      responses:
+        '204':
+          description: Format deleted
+
+  # ---------------------------------------------------------------------
+  # ARRIVALS
+  # ---------------------------------------------------------------------
+  /arrivals:
+    post:
+      tags: [Arrivals]
+      summary: Record an arrival (restock) of several book editions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArrivalRequest'
+      responses:
+        '201':
+          description: Arrival created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Arrival'
+    get:
+      tags: [Arrivals]
+      summary: List all arrivals
+      responses:
+        '200':
+          description: List of arrivals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Arrival'
+
+  /arrivals/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Arrivals]
+      summary: Retrieve an arrival by id
+      responses:
+        '200':
+          description: Arrival found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Arrival'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [Arrivals]
+      summary: Delete an arrival
+      responses:
+        '204':
+          description: Arrival deleted
+
+  # ---------------------------------------------------------------------
+  # SALES
+  # ---------------------------------------------------------------------
+  /sales:
+    post:
+      tags: [Sales]
+      summary: Create a sale (initial status IN_PROGRESS)
+      description: >
+        The unit price of each line is taken from the current price of
+        the book edition. An exception is thrown if an edition does not
+        have a price set.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaleRequest'
+      responses:
+        '201':
+          description: Sale created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+        '404':
+          description: Customer or book edition not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      tags: [Sales]
+      summary: List sales (optionally filtered by customer)
+      parameters:
+        - name: customerId
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of sales
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sale'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /sales/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Sales]
+      summary: Retrieve a sale by id
+      responses:
+        '200':
+          description: Sale found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /sales/{id}/validate:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    put:
+      tags: [Sales]
+      summary: Validate a sale (IN_PROGRESS -> VALIDATED)
+      description: >
+        Checks that stock remains sufficient for each book edition in
+        the sale before validating it.
+      responses:
+        '200':
+          description: Sale validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Insufficient stock, or sale already validated/cancelled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /sales/{id}/cancel:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    put:
+      tags: [Sales]
+      summary: Cancel a sale
+      responses:
+        '200':
+          description: Sale cancelled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Sale already cancelled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ---------------------------------------------------------------------
+  # PAYMENTS
+  # ---------------------------------------------------------------------
+  /payments:
+    post:
+      tags: [Payments]
+      summary: Create a payment for a sale (initial status PENDING)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+      responses:
+        '201':
+          description: Payment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '404':
+          description: Sale not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      tags: [Payments]
+      summary: List all payments
+      responses:
+        '200':
+          description: List of payments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment'
+
+  /payments/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Payments]
+      summary: Retrieve a payment by id
+      responses:
+        '200':
+          description: Payment found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /payments/sale/{saleId}:
+    parameters:
+      - name: saleId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags: [Payments]
+      summary: Retrieve the payment associated with a sale
+      responses:
+        '200':
+          description: Payment found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /payments/{id}/process:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    put:
+      tags: [Payments]
+      summary: Mark a payment as paid (PENDING -> PAID)
+      responses:
+        '200':
+          description: Payment processed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Only PENDING payments can be processed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /payments/{id}/fail:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    put:
+      tags: [Payments]
+      summary: Mark a payment as failed (-> FAILED)
+      responses:
+        '200':
+          description: Payment marked as failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ---------------------------------------------------------------------
+  # STOCK
+  # ---------------------------------------------------------------------
+  /stock/book-edition/{id}/stock:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Stock]
+      summary: Current stock of a book edition (BookEdition)
+      description: Stock = sum of arrived quantities - sum of sold quantities.
+      responses:
+        '200':
+          description: Quantity in stock
+          content:
+            application/json:
+              schema:
+                type: integer
+                example: 7
+
+  /stock/book/{bookId}:
+    parameters:
+      - name: bookId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags: [Stock]
+      summary: Stock by book, aggregated by edition format
+      description: >
+        Returns the total stock of the book broken down by format
+        label (e.g. {"POCKET": 10, "HARDCOVER": 5}).
+      responses:
+        '200':
+          description: Stock of the book by format
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: integer
+                example:
+                  POCKET: 10
+                  HARDCOVER: 5
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ---------------------------------------------------------------------
+  # REPORTS
+  # ---------------------------------------------------------------------
+  /reports/revenue-by-genre:
+    get:
+      tags: [Reports]
+      summary: Revenue (sales amount) grouped by book genre
+      responses:
+        '200':
+          description: Sales amount by genre
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: number
+                  format: bigdecimal
+                example:
+                  "Science-Fiction": 452.50
+                  "Novel": 1290.00
+
+components:
+  parameters:
+    IdPathParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+
+    # ---- Enums ----
+    FormatLabel:
+      type: string
+      enum: [POCKET, HARDCOVER, SOFTCOVER]
+
+    SaleStatus:
+      type: string
+      enum: [IN_PROGRESS, VALIDATED, CANCELLED]
+
+    PaymentMethod:
+      type: string
+      enum: [CASH, CARD, MOBILE]
+
+    PaymentStatus:
+      type: string
+      enum: [PENDING, PAID, FAILED]
+
+    # ---- Entities ----
+    Author:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        lastName:
+          type: string
+        firstName:
+          type: string
+
+    Book:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        author:
+          $ref: '#/components/schemas/Author'
+        isbn:
+          type: string
+        publicationYear:
+          type: integer
+        genre:
+          type: string
+
+    Format:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        formatLabel:
+          $ref: '#/components/schemas/FormatLabel'
+
+    BookEdition:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        isbn:
+          type: string
+        book:
+          $ref: '#/components/schemas/Book'
+        format:
+          $ref: '#/components/schemas/Format'
+        price:
+          type: number
+          format: double
+
+    BookEditionPage:
+      type: object
+      description: Spring Data page (org.springframework.data.domain.Page) of book editions.
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookEdition'
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+        number:
+          type: integer
+          description: Current page number (0-indexed)
+        size:
+          type: integer
+        first:
+          type: boolean
+        last:
+          type: boolean
+
+    ArrivalLine:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        bookEdition:
+          $ref: '#/components/schemas/BookEdition'
+        quantity:
+          type: integer
+
+    Arrival:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        arrivedAt:
+          type: string
+          format: date-time
+
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fullName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        registerAt:
+          type: string
+          format: date-time
+
+    Sale:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        customer:
+          $ref: '#/components/schemas/Customer'
+        saleDate:
+          type: string
+          format: date-time
+        totalAmount:
+          type: number
+          format: bigdecimal
+        status:
+          $ref: '#/components/schemas/SaleStatus'
+
+    SaleLine:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        bookEdition:
+          $ref: '#/components/schemas/BookEdition'
+        unitPrice:
+          type: number
+          format: bigdecimal
+        quantity:
+          type: integer
+
+    Payment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        sale:
+          $ref: '#/components/schemas/Sale'
+        amount:
+          type: number
+          format: bigdecimal
+        method:
+          $ref: '#/components/schemas/PaymentMethod'
+        status:
+          $ref: '#/components/schemas/PaymentStatus'
+        paidAt:
+          type: string
+          format: date-time
+          nullable: true
+
+    # ---- Request DTOs ----
+    AuthorRequest:
+      type: object
+      properties:
+        lastName:
+          type: string
+        firstName:
+          type: string
+      required: [lastName, firstName]
+
+    BookRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        authorId:
+          type: string
+          format: uuid
+        isbn:
+          type: string
+        publishYear:
+          type: integer
+        genre:
+          type: string
+      required: [title, authorId]
+
+    FormatRequest:
+      type: object
+      properties:
+        formatLabel:
+          $ref: '#/components/schemas/FormatLabel'
+      required: [formatLabel]
+
+    BookEditionRequest:
+      type: object
+      properties:
+        isbn:
+          type: string
+        bookId:
+          type: string
+          format: uuid
+        formatId:
+          type: string
+          format: uuid
+        price:
+          type: number
+          format: double
+      required: [bookId]
+
+    ArrivalLineRequest:
+      type: object
+      properties:
+        bookEditionId:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+      required: [bookEditionId, quantity]
+
+    ArrivalRequest:
+      type: object
+      properties:
+        arrivedAt:
+          type: string
+          format: date-time
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArrivalLineRequest'
+      required: [lines]
+
+    SaleLineRequest:
+      type: object
+      properties:
+        bookEditionId:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+      required: [bookEditionId, quantity]
+
+    SaleRequest:
+      type: object
+      properties:
+        customerId:
+          type: string
+          format: uuid
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/SaleLineRequest'
+      required: [customerId, lines]
+
+    PaymentRequest:
+      type: object
+      properties:
+        saleId:
+          type: string
+          format: uuid
+        method:
+          $ref: '#/components/schemas/PaymentMethod'
+      required: [saleId, method]
