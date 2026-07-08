@@ -3,7 +3,7 @@ package mg.yoan.lib.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import mg.yoan.lib.model.*;
 import mg.yoan.lib.model.dto.GenreRevenue;
@@ -58,7 +58,7 @@ class SaleLineRepositoryIT {
         saleRepository.save(
             Sale.builder()
                 .customer(customer)
-                .saleDate(LocalDateTime.now())
+                .saleDate(Instant.now())
                 .status(SaleStatus.VALIDATED)
                 .totalAmount(BigDecimal.valueOf(39.80))
                 .build());
@@ -74,7 +74,7 @@ class SaleLineRepositoryIT {
         saleRepository.save(
             Sale.builder()
                 .customer(customer)
-                .saleDate(LocalDateTime.now())
+                .saleDate(Instant.now())
                 .status(SaleStatus.IN_PROGRESS)
                 .totalAmount(BigDecimal.valueOf(19.90))
                 .build());
