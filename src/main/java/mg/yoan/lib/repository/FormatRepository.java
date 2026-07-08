@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FormatRepository extends JpaRepository<Format, UUID> {
-    boolean existsByFormatLabel(FormatLabel formatLabel);
+  boolean existsByFormatLabel(FormatLabel formatLabel);
 }

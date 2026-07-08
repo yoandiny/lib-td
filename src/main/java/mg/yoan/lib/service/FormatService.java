@@ -17,7 +17,7 @@ public class FormatService {
   public Format create(FormatRequest request) {
     if (formatRepository.existsByFormatLabel(request.getFormatLabel())) {
       throw new IllegalStateException(
-              "Format with label " + request.getFormatLabel() + " already exists");
+          "Format with label " + request.getFormatLabel() + " already exists");
     }
     Format format = Format.builder().formatLabel(request.getFormatLabel()).build();
     return formatRepository.save(format);
