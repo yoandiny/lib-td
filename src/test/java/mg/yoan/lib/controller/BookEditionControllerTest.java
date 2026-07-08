@@ -64,9 +64,12 @@ class BookEditionControllerTest {
   @Test
   void getAllBookEditions_withBookId_returns200() throws Exception {
     UUID bookId = UUID.randomUUID();
-    when(bookEditionService.getAllByBook(bookId)).thenReturn(List.of(BookEdition.builder().build()));
+    when(bookEditionService.getAllByBook(bookId))
+        .thenReturn(List.of(BookEdition.builder().build()));
 
-    mockMvc.perform(get("/book-editions").param("bookId", bookId.toString())).andExpect(status().isOk());
+    mockMvc
+        .perform(get("/book-editions").param("bookId", bookId.toString()))
+        .andExpect(status().isOk());
   }
 
   @Test

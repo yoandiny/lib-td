@@ -31,7 +31,8 @@ class GlobalExceptionHandlerTest {
   void handleIllegalArgumentException_returns400() {
     when(request.getRequestURI()).thenReturn("/books");
 
-    var response = handler.handleIllegalArgumentException(new IllegalArgumentException("bad"), request);
+    var response =
+        handler.handleIllegalArgumentException(new IllegalArgumentException("bad"), request);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     assertThat(response.getBody()).isNotNull();
@@ -59,7 +60,8 @@ class GlobalExceptionHandlerTest {
   void handleAuthenticationException_returns401() {
     when(request.getRequestURI()).thenReturn("/secured");
 
-    var response = handler.handleAuthenticationException(new AuthenticationException("unauthorized"), request);
+    var response =
+        handler.handleAuthenticationException(new AuthenticationException("unauthorized"), request);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     assertThat(response.getBody()).isNotNull();
@@ -73,7 +75,8 @@ class GlobalExceptionHandlerTest {
   void handleIllegalStateException_returns409() {
     when(request.getRequestURI()).thenReturn("/sales");
 
-    var response = handler.handleIllegalStateException(new IllegalStateException("conflict"), request);
+    var response =
+        handler.handleIllegalStateException(new IllegalStateException("conflict"), request);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
     assertThat(response.getBody()).isNotNull();
