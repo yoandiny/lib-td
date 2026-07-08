@@ -2,9 +2,9 @@ openapi: 3.0.3
 info:
   title: Lib-TD API
   description: >
-    API de gestion d'une librairie : auteurs, livres, éditions de livres,
-    formats, arrivages (réassort de stock), ventes, paiements, et rapports
-    (stock, chiffre d'affaires par genre).
+    API for managing a bookstore: authors, books, book editions,
+    formats, arrivals (stock restocking), sales, payments, and reports
+    (stock, revenue by genre).
   version: "1.0.0"
 
 servers:
@@ -28,7 +28,7 @@ paths:
   /authors:
     post:
       tags: [Authors]
-      summary: Créer un auteur
+      summary: Create an author
       requestBody:
         required: true
         content:
@@ -37,17 +37,17 @@ paths:
               $ref: '#/components/schemas/AuthorRequest'
       responses:
         '201':
-          description: Auteur créé
+          description: Author created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Author'
     get:
       tags: [Authors]
-      summary: Lister tous les auteurs
+      summary: List all authors
       responses:
         '200':
-          description: Liste des auteurs
+          description: List of authors
           content:
             application/json:
               schema:
@@ -60,10 +60,10 @@ paths:
       - $ref: '#/components/parameters/IdPathParam'
     get:
       tags: [Authors]
-      summary: Récupérer un auteur par id
+      summary: Retrieve an author by id
       responses:
         '200':
-          description: Auteur trouvé
+          description: Author found
           content:
             application/json:
               schema:
@@ -72,7 +72,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     put:
       tags: [Authors]
-      summary: Mettre à jour un auteur
+      summary: Update an author
       requestBody:
         required: true
         content:
@@ -81,7 +81,7 @@ paths:
               $ref: '#/components/schemas/AuthorRequest'
       responses:
         '200':
-          description: Auteur mis à jour
+          description: Author updated
           content:
             application/json:
               schema:
@@ -90,10 +90,10 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       tags: [Authors]
-      summary: Supprimer un auteur
+      summary: Delete an author
       responses:
         '204':
-          description: Auteur supprimé
+          description: Author deleted
 
   # ---------------------------------------------------------------------
   # BOOKS
@@ -101,7 +101,7 @@ paths:
   /books:
     post:
       tags: [Books]
-      summary: Créer un livre
+      summary: Create a book
       requestBody:
         required: true
         content:
@@ -110,17 +110,17 @@ paths:
               $ref: '#/components/schemas/BookRequest'
       responses:
         '201':
-          description: Livre créé
+          description: Book created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Book'
     get:
       tags: [Books]
-      summary: Lister tous les livres
+      summary: List all books
       responses:
         '200':
-          description: Liste des livres
+          description: List of books
           content:
             application/json:
               schema:
@@ -133,10 +133,10 @@ paths:
       - $ref: '#/components/parameters/IdPathParam'
     get:
       tags: [Books]
-      summary: Récupérer un livre par id
+      summary: Retrieve a book by id
       responses:
         '200':
-          description: Livre trouvé
+          description: Book found
           content:
             application/json:
               schema:
@@ -145,7 +145,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     put:
       tags: [Books]
-      summary: Mettre à jour un livre
+      summary: Update a book
       requestBody:
         required: true
         content:
@@ -154,7 +154,7 @@ paths:
               $ref: '#/components/schemas/BookRequest'
       responses:
         '200':
-          description: Livre mis à jour
+          description: Book updated
           content:
             application/json:
               schema:
@@ -163,20 +163,20 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       tags: [Books]
-      summary: Supprimer un livre
+      summary: Delete a book
       responses:
         '204':
-          description: Livre supprimé
+          description: Book deleted
 
   /books/{id}/editions:
     parameters:
       - $ref: '#/components/parameters/IdPathParam'
     get:
       tags: [Books]
-      summary: Lister les éditions d'un livre
+      summary: List the editions of a book
       responses:
         '200':
-          description: Liste des éditions du livre
+          description: List of editions of the book
           content:
             application/json:
               schema:
@@ -197,10 +197,10 @@ paths:
           format: uuid
     get:
       tags: [Books]
-      summary: Récupérer une édition précise d'un livre
+      summary: Retrieve a specific edition of a book
       responses:
         '200':
-          description: Edition trouvée
+          description: Edition found
           content:
             application/json:
               schema:
@@ -214,7 +214,7 @@ paths:
   /book-editions:
     post:
       tags: [BookEditions]
-      summary: Créer une édition de livre
+      summary: Create a book edition
       requestBody:
         required: true
         content:
@@ -223,14 +223,14 @@ paths:
               $ref: '#/components/schemas/BookEditionRequest'
       responses:
         '201':
-          description: Edition créée
+          description: Edition created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/BookEdition'
     get:
       tags: [BookEditions]
-      summary: Lister les éditions de livre (optionnellement filtrées par livre)
+      summary: List book editions (optionally filtered by book)
       parameters:
         - name: bookId
           in: query
@@ -240,7 +240,7 @@ paths:
             format: uuid
       responses:
         '200':
-          description: Liste des éditions
+          description: List of editions
           content:
             application/json:
               schema:
@@ -251,7 +251,7 @@ paths:
   /book-editions/search:
     get:
       tags: [BookEditions]
-      summary: Recherche paginée d'éditions de livre selon plusieurs critères
+      summary: Paginated search of book editions based on several criteria
       parameters:
         - name: isbn
           in: query
@@ -314,7 +314,7 @@ paths:
             default: asc
       responses:
         '200':
-          description: Page d'éditions correspondant aux critères
+          description: Page of editions matching the criteria
           content:
             application/json:
               schema:
@@ -325,10 +325,10 @@ paths:
       - $ref: '#/components/parameters/IdPathParam'
     get:
       tags: [BookEditions]
-      summary: Récupérer une édition par id
+      summary: Retrieve an edition by id
       responses:
         '200':
-          description: Edition trouvée
+          description: Edition found
           content:
             application/json:
               schema:
@@ -337,7 +337,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     put:
       tags: [BookEditions]
-      summary: Mettre à jour une édition
+      summary: Update an edition
       requestBody:
         required: true
         content:
@@ -346,7 +346,7 @@ paths:
               $ref: '#/components/schemas/BookEditionRequest'
       responses:
         '200':
-          description: Edition mise à jour
+          description: Edition updated
           content:
             application/json:
               schema:
@@ -355,10 +355,10 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       tags: [BookEditions]
-      summary: Supprimer une édition
+      summary: Delete an edition
       responses:
         '204':
-          description: Edition supprimée
+          description: Edition deleted
 
   # ---------------------------------------------------------------------
   # FORMATS
@@ -366,7 +366,7 @@ paths:
   /formats:
     post:
       tags: [Formats]
-      summary: Créer un format
+      summary: Create a format
       requestBody:
         required: true
         content:
@@ -375,17 +375,17 @@ paths:
               $ref: '#/components/schemas/FormatRequest'
       responses:
         '201':
-          description: Format créé
+          description: Format created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Format'
     get:
       tags: [Formats]
-      summary: Lister tous les formats
+      summary: List all formats
       responses:
         '200':
-          description: Liste des formats
+          description: List of formats
           content:
             application/json:
               schema:
@@ -398,10 +398,10 @@ paths:
       - $ref: '#/components/parameters/IdPathParam'
     get:
       tags: [Formats]
-      summary: Récupérer un format par id
+      summary: Retrieve a format by id
       responses:
         '200':
-          description: Format trouvé
+          description: Format found
           content:
             application/json:
               schema:
@@ -410,7 +410,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     put:
       tags: [Formats]
-      summary: Mettre à jour un format
+      summary: Update a format
       requestBody:
         required: true
         content:
@@ -419,7 +419,7 @@ paths:
               $ref: '#/components/schemas/FormatRequest'
       responses:
         '200':
-          description: Format mis à jour
+          description: Format updated
           content:
             application/json:
               schema:
@@ -428,10 +428,10 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       tags: [Formats]
-      summary: Supprimer un format
+      summary: Delete a format
       responses:
         '204':
-          description: Format supprimé
+          description: Format deleted
 
   # ---------------------------------------------------------------------
   # ARRIVALS
@@ -439,7 +439,7 @@ paths:
   /arrivals:
     post:
       tags: [Arrivals]
-      summary: Enregistrer un arrivage (réassort) de plusieurs éditions de livre
+      summary: Record an arrival (restock) of several book editions
       requestBody:
         required: true
         content:
@@ -448,17 +448,17 @@ paths:
               $ref: '#/components/schemas/ArrivalRequest'
       responses:
         '201':
-          description: Arrivage créé
+          description: Arrival created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Arrival'
     get:
       tags: [Arrivals]
-      summary: Lister tous les arrivages
+      summary: List all arrivals
       responses:
         '200':
-          description: Liste des arrivages
+          description: List of arrivals
           content:
             application/json:
               schema:
@@ -471,10 +471,10 @@ paths:
       - $ref: '#/components/parameters/IdPathParam'
     get:
       tags: [Arrivals]
-      summary: Récupérer un arrivage par id
+      summary: Retrieve an arrival by id
       responses:
         '200':
-          description: Arrivage trouvé
+          description: Arrival found
           content:
             application/json:
               schema:
@@ -483,10 +483,10 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       tags: [Arrivals]
-      summary: Supprimer un arrivage
+      summary: Delete an arrival
       responses:
         '204':
-          description: Arrivage supprimé
+          description: Arrival deleted
 
   # ---------------------------------------------------------------------
   # SALES
@@ -494,11 +494,11 @@ paths:
   /sales:
     post:
       tags: [Sales]
-      summary: Créer une vente (statut initial IN_PROGRESS)
+      summary: Create a sale (initial status IN_PROGRESS)
       description: >
-        Le prix unitaire de chaque ligne est repris du prix courant de
-        l'édition de livre. Une exception est levée si une édition n'a pas
-        de prix défini.
+        The unit price of each line is taken from the current price of
+        the book edition. An exception is thrown if an edition does not
+        have a price set.
       requestBody:
         required: true
         content:
@@ -507,20 +507,20 @@ paths:
               $ref: '#/components/schemas/SaleRequest'
       responses:
         '201':
-          description: Vente créée
+          description: Sale created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Sale'
         '404':
-          description: Client ou édition de livre introuvable
+          description: Customer or book edition not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
     get:
       tags: [Sales]
-      summary: Lister les ventes (optionnellement filtrées par client)
+      summary: List sales (optionally filtered by customer)
       parameters:
         - name: customerId
           in: query
@@ -530,7 +530,7 @@ paths:
             format: uuid
       responses:
         '200':
-          description: Liste des ventes
+          description: List of sales
           content:
             application/json:
               schema:
@@ -538,7 +538,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Sale'
         '404':
-          description: Client introuvable
+          description: Customer not found
           content:
             application/json:
               schema:
@@ -549,10 +549,10 @@ paths:
       - $ref: '#/components/parameters/IdPathParam'
     get:
       tags: [Sales]
-      summary: Récupérer une vente par id
+      summary: Retrieve a sale by id
       responses:
         '200':
-          description: Vente trouvée
+          description: Sale found
           content:
             application/json:
               schema:
@@ -565,13 +565,13 @@ paths:
       - $ref: '#/components/parameters/IdPathParam'
     put:
       tags: [Sales]
-      summary: Valider une vente (IN_PROGRESS -> VALIDATED)
+      summary: Validate a sale (IN_PROGRESS -> VALIDATED)
       description: >
-        Vérifie que le stock reste suffisant pour chaque édition de livre de
-        la vente avant de la valider.
+        Checks that stock remains sufficient for each book edition in
+        the sale before validating it.
       responses:
         '200':
-          description: Vente validée
+          description: Sale validated
           content:
             application/json:
               schema:
@@ -579,7 +579,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
         '409':
-          description: Stock insuffisant, ou vente déjà validée/annulée
+          description: Insufficient stock, or sale already validated/cancelled
           content:
             application/json:
               schema:
@@ -590,10 +590,10 @@ paths:
       - $ref: '#/components/parameters/IdPathParam'
     put:
       tags: [Sales]
-      summary: Annuler une vente
+      summary: Cancel a sale
       responses:
         '200':
-          description: Vente annulée
+          description: Sale cancelled
           content:
             application/json:
               schema:
@@ -601,7 +601,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
         '409':
-          description: Vente déjà annulée
+          description: Sale already cancelled
           content:
             application/json:
               schema:
@@ -613,7 +613,7 @@ paths:
   /payments:
     post:
       tags: [Payments]
-      summary: Créer un paiement pour une vente (statut initial PENDING)
+      summary: Create a payment for a sale (initial status PENDING)
       requestBody:
         required: true
         content:
@@ -622,23 +622,23 @@ paths:
               $ref: '#/components/schemas/PaymentRequest'
       responses:
         '201':
-          description: Paiement créé
+          description: Payment created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Payment'
         '404':
-          description: Vente introuvable
+          description: Sale not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
     get:
       tags: [Payments]
-      summary: Lister tous les paiements
+      summary: List all payments
       responses:
         '200':
-          description: Liste des paiements
+          description: List of payments
           content:
             application/json:
               schema:
@@ -651,10 +651,10 @@ paths:
       - $ref: '#/components/parameters/IdPathParam'
     get:
       tags: [Payments]
-      summary: Récupérer un paiement par id
+      summary: Retrieve a payment by id
       responses:
         '200':
-          description: Paiement trouvé
+          description: Payment found
           content:
             application/json:
               schema:
@@ -672,10 +672,10 @@ paths:
           format: uuid
     get:
       tags: [Payments]
-      summary: Récupérer le paiement associé à une vente
+      summary: Retrieve the payment associated with a sale
       responses:
         '200':
-          description: Paiement trouvé
+          description: Payment found
           content:
             application/json:
               schema:
@@ -688,10 +688,10 @@ paths:
       - $ref: '#/components/parameters/IdPathParam'
     put:
       tags: [Payments]
-      summary: Marquer un paiement comme payé (PENDING -> PAID)
+      summary: Mark a payment as paid (PENDING -> PAID)
       responses:
         '200':
-          description: Paiement traité
+          description: Payment processed
           content:
             application/json:
               schema:
@@ -699,7 +699,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
         '409':
-          description: Seuls les paiements PENDING peuvent être traités
+          description: Only PENDING payments can be processed
           content:
             application/json:
               schema:
@@ -710,10 +710,10 @@ paths:
       - $ref: '#/components/parameters/IdPathParam'
     put:
       tags: [Payments]
-      summary: Marquer un paiement comme échoué (-> FAILED)
+      summary: Mark a payment as failed (-> FAILED)
       responses:
         '200':
-          description: Paiement marqué en échec
+          description: Payment marked as failed
           content:
             application/json:
               schema:
@@ -729,11 +729,11 @@ paths:
       - $ref: '#/components/parameters/IdPathParam'
     get:
       tags: [Stock]
-      summary: Stock courant d'une édition de livre (BookEdition)
-      description: Stock = somme des quantités arrivées - somme des quantités vendues.
+      summary: Current stock of a book edition (BookEdition)
+      description: Stock = sum of arrived quantities - sum of sold quantities.
       responses:
         '200':
-          description: Quantité en stock
+          description: Quantity in stock
           content:
             application/json:
               schema:
@@ -750,13 +750,13 @@ paths:
           format: uuid
     get:
       tags: [Stock]
-      summary: Stock par livre, agrégé par format d'édition
+      summary: Stock by book, aggregated by edition format
       description: >
-        Retourne le stock total du livre réparti par label de format
-        (ex. {"POCKET": 10, "HARDCOVER": 5}).
+        Returns the total stock of the book broken down by format
+        label (e.g. {"POCKET": 10, "HARDCOVER": 5}).
       responses:
         '200':
-          description: Stock du livre par format
+          description: Stock of the book by format
           content:
             application/json:
               schema:
@@ -775,10 +775,10 @@ paths:
   /reports/revenue-by-genre:
     get:
       tags: [Reports]
-      summary: Chiffre d'affaires (montant des ventes) regroupé par genre de livre
+      summary: Revenue (sales amount) grouped by book genre
       responses:
         '200':
-          description: Montant des ventes par genre
+          description: Sales amount by genre
           content:
             application/json:
               schema:
@@ -788,7 +788,7 @@ paths:
                   format: bigdecimal
                 example:
                   "Science-Fiction": 452.50
-                  "Roman": 1290.00
+                  "Novel": 1290.00
 
 components:
   parameters:
@@ -802,7 +802,7 @@ components:
 
   responses:
     NotFound:
-      description: Ressource introuvable
+      description: Resource not found
       content:
         application/json:
           schema:
@@ -897,7 +897,7 @@ components:
 
     BookEditionPage:
       type: object
-      description: Page Spring Data (org.springframework.data.domain.Page) d'éditions de livre.
+      description: Spring Data page (org.springframework.data.domain.Page) of book editions.
       properties:
         content:
           type: array
@@ -910,7 +910,7 @@ components:
           type: integer
         number:
           type: integer
-          description: Numéro de la page courante (0-indexé)
+          description: Current page number (0-indexed)
         size:
           type: integer
         first:
