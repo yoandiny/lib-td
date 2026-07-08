@@ -29,6 +29,6 @@ public class Format {
   private UUID id;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "format_label", nullable = false, length = 50)
+  @Column(name = "format_label", nullable = false, length = 50, unique = true)
   private FormatLabel formatLabel;
 }
