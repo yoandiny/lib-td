@@ -17,6 +17,7 @@ tags:
   - name: Formats
   - name: Arrivals
   - name: Sales
+  - name: Customers
   - name: Payments
   - name: Stock
   - name: Reports
@@ -207,6 +208,79 @@ paths:
                 $ref: '#/components/schemas/BookEdition'
         '404':
           $ref: '#/components/responses/NotFound'
+
+  # ---------------------------------------------------------------------
+  # CUSTOMERS
+  # ---------------------------------------------------------------------
+  /customers:
+    post:
+      tags: [Customers]
+      summary: Create a customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+      responses:
+        '201':
+          description: Customer created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+    get:
+      tags: [Customers]
+      summary: List all customers
+      responses:
+        '200':
+          description: List of customers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+
+  /customers/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IdPathParam'
+    get:
+      tags: [Customers]
+      summary: Retrieve a customer by id
+      responses:
+        '200':
+          description: Customer found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Customers]
+      summary: Update a customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+      responses:
+        '200':
+          description: Customer updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [Customers]
+      summary: Delete a customer
+      responses:
+        '204':
+          description: Customer deleted
 
   # ---------------------------------------------------------------------
   # BOOK EDITIONS
@@ -954,6 +1028,19 @@ components:
         registerAt:
           type: string
           format: date-time
+    CustomerRequest:
+      type: object
+      properties:
+        fullName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        registerAt:
+          type: string
+          format: date-time
+      required: [ fullName, email ]
 
     Sale:
       type: object
